@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
+    "dev": "concurrently \"nodemon app.js\" \"npx @tailwindcss/cli -i ./public/stylesheets/input.css -o ./public/stylesheets/output.css --watch\"",
+    "start": "nodemon app.js",
+    "build:css": "NODE_ENV=production npx @tailwindcss/cli -i ./public/stylesheets/input.css -o ./public/stylesheets/output.css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -10,11 +13,16 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@tailwindcss/cli": "^4.1.13",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.18.1"
+    "mongoose": "^8.18.1",
+    "tailwindcss": "^4.1.13"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
   }
 }

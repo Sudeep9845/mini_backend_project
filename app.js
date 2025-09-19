@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
 app.get("/", (req, res) => {
-	res.send("hello");
+	res.render("index");
 });
 
 app.use((err, req, res, next) => {
