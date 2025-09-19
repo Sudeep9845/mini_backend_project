@@ -10,7 +10,7 @@ app.set("view engine", "ejs");
 // set path for static files 
 app.use(express.static(path.join(__dirname, "./public")))
 
-// 
+// Middlewares for body parsing
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
