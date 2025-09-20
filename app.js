@@ -33,19 +33,20 @@ app.get("/login", (req, res) => {
 	res.render("login");
 });
 
-// Protected route to render the user's profile page
-// `isLoggedIn` middleware ensures only authenticated users can access it
-app.get("/profile", isLoggedIn, async (req, res) => {
-	let user = await userModel.findOne({ email: req.user.email });
-	res.render("profile", { user: user });
-});
-
 // Route to handle user logout
 app.get("/logout", (req, res) => {
 	// Clear the token cookie
 	res.cookie("token", "");
 	// Redirect to the login page
 	res.redirect("/login");
+});
+
+// Protected route to render the user's profile page
+// `isLoggedIn` middleware ensures only authenticated users can access it
+app.get("/profile", isLoggedIn, async (req, res) => {
+	// populate() is used to replace the frontend data with actual data from db's it links queries of different db's
+	let user = await userModel.findOne({ email: req.user.email }).populate("posts");
+	res.render("profile", { user: user });
 });
 
 // Route to handle user registration
@@ -101,11 +102,15 @@ app.post("/login", isLoggedIn, async (req, res) => {
 });
 
 // Route to handel Post
-app.post("/post", async (req, res) => {
+app.post("/post", isLoggedIn, async (req, res) => {
 	let user = await userModel.findOne({ email: req.user.email });
-	postModel.create({
-		
-	})
+	let post = await postModel.create({
+		user: user._id,
+		content: req.body.content,
+	});
+	user.posts.push(post._id);
+	await user.save();
+	res.redirect("/profile");
 });
 // Middleware to check if the user is logged in
 function isLoggedIn(req, res, next) {

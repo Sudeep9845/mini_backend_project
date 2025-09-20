@@ -26,7 +26,7 @@
 				/></a>
 			</nav>
 			<form action="/post" method="POST" class=" mt-10">
-				<textarea name="content" class="block w-1/3 h-40 p-3 text-white font-alan font-tighter bg-gray-700 rounded-md border-2 border-emerald-500 outline-none resize-none" placeholder="What's on your mind?""></textarea>
+				<textarea name="content" class="block w-1/3 h-24 p-3 text-white font-alan font-tighter bg-gray-700 rounded-md border-2 border-emerald-500 outline-none resize-none" placeholder="What's on your mind?""></textarea>
 				<input
 						type="submit"
 						value="Create a Post"
@@ -37,39 +37,21 @@
 			<div class="post-container w-full mt-18">
 				<h3 class="text-md text-gray-400">Your Posts...</h3>
 				<div class="posts w-full flex flex-col mt-3 gap-3">
-					<div class="post w-1/3 h-35 p-3 bg-gray-700 rounded-md border-2 border-gray-500 font-alan text-white flex flex-col gap-2">
-						<h4 class="text-emerald-400">@someone</h4>
-						<p class="line-clamp-2 tracking-tight font-light">Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero laborum assumenda expedita animi tempora vero veniam iure dolorum! Distinctio provident optio voluptas ex vero illum tenetur dolore odio dolores a?</p>
-						<div class="action-btns flex w-full items-center justify-between mt-auto">
-							<a href="/read-post"><h3 class="text-md text-sky-300 cursor-pointer">Read more</h3></a>
-							<div class="btns flex items-center justify-between gap-4">
-							<a href=""><i class="fa-regular fa-heart text-red-400 cursor-pointer"></i></a>
-							<a href="/edit-post"><i class="fa-regular fa-pen-to-square text-yellow-300 cursor-pointer"></i></a>
+					<% user.posts.reverse().forEach((post) => { %>
+						<div class="post w-1/3 h-35 p-3 bg-gray-700 rounded-md border-2 border-gray-500 font-alan text-white flex flex-col gap-2">
+							<h4 class="text-emerald-400">@<%= user.username %></h4>
+							<p class="line-clamp-2 tracking-tight font-light"><%= post.content %> </p>
+							<div class="action-btns flex w-full items-center justify-between mt-auto">
+								<a href="/read-post"><h3 class="text-md text-sky-300 cursor-pointer">Read more</h3></a>
+								<div class="btns flex items-center justify-between gap-4">
+								<a href=""><i class="fa-regular fa-heart text-red-400 cursor-pointer"></i></a>
+								<a href="/edit-post"><i class="fa-regular fa-pen-to-square text-yellow-300 cursor-pointer"></i></a>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="post w-1/3 h-35 p-3 bg-gray-700 rounded-md border-2 border-gray-500 font-alan text-white flex flex-col gap-2">
-						<h4 class="text-emerald-400">@someone</h4>
-						<p class="line-clamp-2 tracking-tight font-light">Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero laborum assumenda expedita animi tempora vero veniam iure dolorum! Distinctio provident optio voluptas ex vero illum tenetur dolore odio dolores a?</p>
-						<div class="action-btns flex w-full items-center justify-between mt-auto">
-							<h3 class="text-md text-sky-300 cursor-pointer">Read more</h3>
-							<div class="btns flex items-center justify-between gap-4">
-							<i class="fa-regular fa-heart text-red-400 cursor-pointer"></i>
-							<i class="fa-regular fa-pen-to-square text-yellow-300 cursor-pointer"></i>
-							</div>
-						</div>
-					</div>
-					<div class="post w-1/3 h-35 p-3 bg-gray-700 rounded-md border-2 border-gray-500 font-alan text-white flex flex-col gap-2">
-						<h4 class="text-emerald-400">@someone</h4>
-						<p class="line-clamp-2 tracking-tight font-light">Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero laborum assumenda expedita animi tempora vero veniam iure dolorum! Distinctio provident optio voluptas ex vero illum tenetur dolore odio dolores a?</p>
-						<div class="action-btns flex w-full items-center justify-between mt-auto">
-							<h3 class="text-md text-sky-300 cursor-pointer">Read more</h3>
-							<div class="btns flex items-center justify-between gap-4">
-							<i class="fa-regular fa-heart text-red-400 cursor-pointer"></i>
-							<i class="fa-regular fa-pen-to-square text-yellow-300 cursor-pointer"></i>
-							</div>
-						</div>
-					</div>
+					<%	}); %>
+					
+					
 				</div>
 			</div>
 		</div>
