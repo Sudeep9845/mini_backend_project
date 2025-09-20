@@ -1,4 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Anek+Latin:wght@100..800&family=Big+Shoulders:opsz,wght@10..72,100..900&family=Boldonse&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Bytesized&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Outfit:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Public+Sans:ital,wght@0,100..900;1,100..900&family=Quicksand:wght@300..700&family=Rajdhani:wght@300;400;500;600;700&family=Sora:wght@100..800&family=Space+Grotesk:wght@300..700&family=Urbanist:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
+@theme{
+    --font-alan : "Alan Sans", sans-serif;
+    --font-rajadhani : "Rajdhani", sans-serif;
+}
 
 @layer base{
     input[type=number]::-webkit-inner-spin-button,
