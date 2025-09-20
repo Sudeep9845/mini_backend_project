@@ -35,9 +35,9 @@ app.get("/login", (req, res) => {
 
 // Protected route to render the user's profile page
 // `isLoggedIn` middleware ensures only authenticated users can access it
-app.get("/profile", isLoggedIn, (req, res) => {
-	console.log(req.user);
-	res.render("profile", { user: req.user });
+app.get("/profile", isLoggedIn, async (req, res) => {
+	let user = await userModel.findOne({ email: req.user.email });
+	res.render("profile", { user: user });
 });
 
 // Route to handle user logout
@@ -76,7 +76,7 @@ app.post("/register", async (req, res) => {
 });
 
 // Route to handle user login
-app.post("/login", async (req, res) => {
+app.post("/login", isLoggedIn, async (req, res) => {
 	// Extract email and password from request body
 	let { email, password } = req.body;
 	// Find the user by email
@@ -92,7 +92,7 @@ app.post("/login", async (req, res) => {
 			let token = jwt.sign({ email: email, userid: user._id }, "shhhh");
 			// Set the token in a cookie
 			res.cookie("token", token);
-			res.status(200).send("Logged in Successfully");
+			res.status(200).redirect("/profile");
 		} else {
 			// If passwords don't match, redirect to login
 			res.redirect("/login");
@@ -100,21 +100,23 @@ app.post("/login", async (req, res) => {
 	});
 });
 
+// Route to handel Post
+app.post("/post", async (req, res) => {
+	let user = await userModel.findOne({ email: req.user.email });
+	postModel.create({
+		
+	})
+});
 // Middleware to check if the user is logged in
 function isLoggedIn(req, res, next) {
 	// Check if the token cookie exists
-	if (!req.cookies.token) {
-		return res.status(401).send("You must be logged in to view this page");
-	}
-	try {
+	if (!req.cookies.token) res.redirect("/login");
+	else {
 		// Verify the JWT token
 		let data = jwt.verify(req.cookies.token, "shhhh");
 		// Attach user data from the token to the request object
 		req.user = data;
 		next(); // Proceed to the next middleware or route handler
-	} catch (error) {
-		// If token is invalid, send an error
-		return res.status(401).send("You must be logged in to view this page");
 	}
 }
 

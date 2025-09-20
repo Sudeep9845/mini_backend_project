@@ -3,10 +3,76 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		
+		<link rel="stylesheet" href="/stylesheets/output.css" />
 		<title>Document</title>
 	</head>
-	<body>
-		<%= user.email %>
-		
+	<body class="m-0 p-0 box-border">
+		<div id="main" class="w-full min-h-screen bg-gray-900 p-10">
+			<nav class="w-full flex justify-between items-center">
+				<div class="greeting-text ">
+					<h3 class="text-4xl text-amber-50 font-alan">
+						<span class="tracking-tight font-light">Hello, </span><%= user.name
+						%>👋
+					</h3>
+                    <h5 class="text-md tracking-tight font-light text-emerald-400 font-alan mt-[-5px]">You can create a new post.</h5>
+				</div>
+
+				<a href="/logout"
+					><input
+						type="button"
+						value="Logout"
+						class="bg-red-400 block self-end px-4 py-2 font-poppins text-amber-50 rounded hover:bg-red-500 cursor-pointer"
+				/></a>
+			</nav>
+			<form action="/post" method="POST" class=" mt-10">
+				<textarea name="content" class="block w-1/3 h-40 p-3 text-white font-alan font-tighter bg-gray-700 rounded-md border-2 border-emerald-500 outline-none resize-none" placeholder="What's on your mind?""></textarea>
+				<input
+						type="submit"
+						value="Create a Post"
+						class="block bg-emerald-400 self-start px-4 py-2 mt-4 font-poppins text-amber-50 rounded hover:bg-emerald-500 cursor-pointer"
+				/>
+			</form>
+
+			<div class="post-container w-full mt-18">
+				<h3 class="text-md text-gray-400">Your Posts...</h3>
+				<div class="posts w-full flex flex-col mt-3 gap-3">
+					<div class="post w-1/3 h-35 p-3 bg-gray-700 rounded-md border-2 border-gray-500 font-alan text-white flex flex-col gap-2">
+						<h4 class="text-emerald-400">@someone</h4>
+						<p class="line-clamp-2 tracking-tight font-light">Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero laborum assumenda expedita animi tempora vero veniam iure dolorum! Distinctio provident optio voluptas ex vero illum tenetur dolore odio dolores a?</p>
+						<div class="action-btns flex w-full items-center justify-between mt-auto">
+							<a href="/read-post"><h3 class="text-md text-sky-300 cursor-pointer">Read more</h3></a>
+							<div class="btns flex items-center justify-between gap-4">
+							<a href=""><i class="fa-regular fa-heart text-red-400 cursor-pointer"></i></a>
+							<a href="/edit-post"><i class="fa-regular fa-pen-to-square text-yellow-300 cursor-pointer"></i></a>
+							</div>
+						</div>
+					</div>
+					<div class="post w-1/3 h-35 p-3 bg-gray-700 rounded-md border-2 border-gray-500 font-alan text-white flex flex-col gap-2">
+						<h4 class="text-emerald-400">@someone</h4>
+						<p class="line-clamp-2 tracking-tight font-light">Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero laborum assumenda expedita animi tempora vero veniam iure dolorum! Distinctio provident optio voluptas ex vero illum tenetur dolore odio dolores a?</p>
+						<div class="action-btns flex w-full items-center justify-between mt-auto">
+							<h3 class="text-md text-sky-300 cursor-pointer">Read more</h3>
+							<div class="btns flex items-center justify-between gap-4">
+							<i class="fa-regular fa-heart text-red-400 cursor-pointer"></i>
+							<i class="fa-regular fa-pen-to-square text-yellow-300 cursor-pointer"></i>
+							</div>
+						</div>
+					</div>
+					<div class="post w-1/3 h-35 p-3 bg-gray-700 rounded-md border-2 border-gray-500 font-alan text-white flex flex-col gap-2">
+						<h4 class="text-emerald-400">@someone</h4>
+						<p class="line-clamp-2 tracking-tight font-light">Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero laborum assumenda expedita animi tempora vero veniam iure dolorum! Distinctio provident optio voluptas ex vero illum tenetur dolore odio dolores a?</p>
+						<div class="action-btns flex w-full items-center justify-between mt-auto">
+							<h3 class="text-md text-sky-300 cursor-pointer">Read more</h3>
+							<div class="btns flex items-center justify-between gap-4">
+							<i class="fa-regular fa-heart text-red-400 cursor-pointer"></i>
+							<i class="fa-regular fa-pen-to-square text-yellow-300 cursor-pointer"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="https://kit.fontawesome.com/723c2e0dc0.js" crossorigin="anonymous"></script>
 	</body>
 </html>
