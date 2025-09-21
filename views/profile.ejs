@@ -44,8 +44,15 @@
 							<div class="action-btns flex w-full items-center justify-between mt-auto">
 								<a href="/read-post"><h3 class="text-md text-sky-300 cursor-pointer">Read more</h3></a>
 								<div class="btns flex items-center justify-between gap-4">
-								<a href=""><i class="fa-regular fa-heart text-red-400 cursor-pointer"></i></a>
-								<a href="/edit-post"><i class="fa-regular fa-pen-to-square text-yellow-300 cursor-pointer"></i></a>
+								<h3 class="text-sm text-white"><%= post.likes.length  %></h3>
+								<a class="like-btn" href="/like/<%= post.id  %>">
+									<% if(post.likes.includes(user.id)){ %>
+										<i class="fa-regular fa-thumbs-down text-red-400 cursor-pointer"></i> 
+										<% }else{ %>
+											<i class="fa-regular fa-thumbs-up text-emerald-400 cursor-pointer"></i> %>
+										<% } %>
+								</a>
+								<a href="/edit/<%= post.id %>"><i class="fa-regular fa-pen-to-square text-yellow-300 cursor-pointer"></i></a>
 								</div>
 							</div>
 						</div>
@@ -56,5 +63,6 @@
 			</div>
 		</div>
 		<script src="https://kit.fontawesome.com/723c2e0dc0.js" crossorigin="anonymous"></script>
+		
 	</body>
 </html>

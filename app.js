@@ -6,6 +6,7 @@ const postModel = require("./models/post");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
+const user = require("./models/user");
 
 // Initialize express app
 const app = express();
@@ -45,10 +46,29 @@ app.get("/logout", (req, res) => {
 // `isLoggedIn` middleware ensures only authenticated users can access it
 app.get("/profile", isLoggedIn, async (req, res) => {
 	// populate() is used to replace the frontend data with actual data from db's it links queries of different db's
-	let user = await userModel.findOne({ email: req.user.email }).populate("posts");
+	let user = await userModel
+		.findOne({ email: req.user.email })
+		.populate("posts");
 	res.render("profile", { user: user });
 });
 
+app.get("/like/:id", isLoggedIn, async (req, res) => {
+	let post = await postModel.findOne({ _id: req.params.id }).populate("user");
+	if (post.likes.indexOf(req.user.userid) === -1) {
+		post.likes.push(req.user.userid);
+	}
+	else {
+		post.likes.splice(post.likes.indexOf(req.user.userid),1)
+	}
+	await post.save();
+	res.redirect("/profile");
+});
+
+app.get("/edit/:id", isLoggedIn, async (req, res) => {
+	let post = await postModel.findOne({ _id: req.params.id }).populate("user");
+	// console.log(post)
+	res.render("edit",{post})
+})
 // Route to handle user registration
 app.post("/register", async (req, res) => {
 	//find if the user already exists
@@ -112,6 +132,12 @@ app.post("/post", isLoggedIn, async (req, res) => {
 	await user.save();
 	res.redirect("/profile");
 });
+
+// route to upadate post
+app.post("/update/:id", isLoggedIn, async (req, res) => {
+	let post = await postModel.findOneAndUpdate({ _id: req.params.id }, { content: req.body.content })
+	res.redirect('/profile')
+})
 // Middleware to check if the user is logged in
 function isLoggedIn(req, res, next) {
 	// Check if the token cookie exists

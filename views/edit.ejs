@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		
+		<link rel="stylesheet" href="/stylesheets/output.css" />
+		<title>Document</title>
+	</head>
+	<body class="m-0 p-0 box-border">
+		<div id="main" class="w-full min-h-screen bg-gray-900 p-10">
+			<nav class="w-full flex justify-between items-center">
+				<div class="greeting-text ">
+					<h3 class="text-4xl text-amber-50 font-alan">
+						<span class="tracking-tight font-light">Hello, </span><%= post.user.name
+						%>👋
+					</h3>
+                    <h5 class="text-md tracking-tight font-light text-yellow-400 font-alan mt-[-5px]">You can edit your post here.</h5>
+				</div>
+
+				<a href="/logout"
+					><input
+						type="button"
+						value="Logout"
+						class="bg-red-400 block self-end px-4 py-2 font-poppins text-amber-50 rounded hover:bg-red-500 cursor-pointer"
+				/></a>
+			</nav>
+			<form action="/update/<%= post.id %>" method="POST" class=" mt-10">
+				<textarea name="content" class="block w-1/3 h-24 p-3 text-white font-alan font-tighter bg-gray-700 rounded-md border-2 border-yellow-400 outline-none resize-none" placeholder="What's on your mind?""><%= post.content  %></textarea>
+				<input
+						type="submit"
+						value="Update Post"
+						class="block bg-yellow-500 self-start px-4 py-2 mt-4 font-poppins text-amber-50 rounded hover:bg-yellow-600 cursor-pointer"
+				/>
+			</form>
+
+		</div>
+		<script src="https://kit.fontawesome.com/723c2e0dc0.js" crossorigin="anonymous"></script>
+		
+	</body>
+</html>
