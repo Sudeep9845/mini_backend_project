@@ -102,7 +102,6 @@ app.post("/register", async (req, res) => {
 	let { username, email, password, age, name } = req.body;
 	let user = await userModel.findOne({ email: email });
 	if (user) return res.status(500).send("User already exists");
-
 	// Hash the password before saving
 	bcrypt.genSalt(10, (err, salt) => {
 		bcrypt.hash(password, salt, async (err, hash) => {
@@ -118,13 +117,13 @@ app.post("/register", async (req, res) => {
 			let token = jwt.sign({ email: email, userid: user._id }, "shhhh");
 			// Set the token in a cookie
 			res.cookie("token", token);
-			res.send("Registered Successfully");
+			res.redirect("/profile");
 		});
 	});
 });
 
 // Route to handle user login
-app.post("/login", isLoggedIn, async (req, res) => {
+app.post("/login", async (req, res) => {
 	// Extract email and password from request body
 	let { email, password } = req.body;
 	// Find the user by email
@@ -176,7 +175,7 @@ app.post("/update/:id", isLoggedIn, async (req, res) => {
 // 	res.redirect("/test");
 // });
 
-app.post("/upload", isLoggedIn, upload.single("image"), async (req,res) => {
+app.post("/upload", isLoggedIn, upload.single("image"), async (req, res) => {
 	let user = await userModel.findOne({ email: req.user.email });
 	user.profilepic = req.file.filename;
 	await user.save();
@@ -187,13 +186,10 @@ app.post("/upload", isLoggedIn, upload.single("image"), async (req,res) => {
 function isLoggedIn(req, res, next) {
 	// Check if the token cookie exists
 	if (!req.cookies.token) res.redirect("/login");
-	try {
+	else {
 		let data = jwt.verify(req.cookies.token, "shhhh");
 		req.user = data;
 		next();
-	} catch (err) {
-		console.log("JWT error:", err);
-		return res.redirect("/login");
 	}
 }
 
