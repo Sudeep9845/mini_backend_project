@@ -6,7 +6,7 @@ const postModel = require("./models/post");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
-const user = require("./models/user");
+const upload = require("./config/multer");
 
 // Initialize express app
 const app = express();
@@ -14,6 +14,7 @@ const port = 3000;
 
 // Set view engine to EJS
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 // Set path for static files (e.g., CSS, client-side JS)
 app.use(express.static(path.join(__dirname, "./public")));
 
@@ -23,6 +24,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // Middleware to parse cookies
 app.use(cookieParser());
+
+// Disk storage code coppied from docs of multer
+// const storage = multer.diskStorage({
+// 	destination: function (req, file, cb) {
+// 		cb(null, "./public/images/uploads");
+// 	},
+// 	filename: function (req, file, cb) {
+// 		crypto.randomBytes(12, (err, bytes) => {
+// 			const fn = bytes.toString("hex") + path.extname(file.originalname);
+// 			cb(null, fn);
+// 		});
+// 	},
+// });
+
+// const upload = multer({ storage: storage });
 
 // Route to render the home page
 app.get("/", (req, res) => {
@@ -56,9 +72,8 @@ app.get("/like/:id", isLoggedIn, async (req, res) => {
 	let post = await postModel.findOne({ _id: req.params.id }).populate("user");
 	if (post.likes.indexOf(req.user.userid) === -1) {
 		post.likes.push(req.user.userid);
-	}
-	else {
-		post.likes.splice(post.likes.indexOf(req.user.userid),1)
+	} else {
+		post.likes.splice(post.likes.indexOf(req.user.userid), 1);
 	}
 	await post.save();
 	res.redirect("/profile");
@@ -66,9 +81,21 @@ app.get("/like/:id", isLoggedIn, async (req, res) => {
 
 app.get("/edit/:id", isLoggedIn, async (req, res) => {
 	let post = await postModel.findOne({ _id: req.params.id }).populate("user");
+	let user = await userModel.findOne({ email: req.user.email });
 	// console.log(post)
-	res.render("edit",{post})
-})
+	res.render("edit", { post, user });
+});
+
+// //Dummy route to learn Multer
+// app.get("/test", (req, res) => {
+// 	res.render("test");
+// });
+
+app.get("/profile/upload", isLoggedIn, async (req, res) => {
+	const user = await userModel.findOne({ email: req.user.email });
+	res.render("profileupdate", { user });
+});
+
 // Route to handle user registration
 app.post("/register", async (req, res) => {
 	//find if the user already exists
@@ -135,19 +162,38 @@ app.post("/post", isLoggedIn, async (req, res) => {
 
 // route to upadate post
 app.post("/update/:id", isLoggedIn, async (req, res) => {
-	let post = await postModel.findOneAndUpdate({ _id: req.params.id }, { content: req.body.content })
-	res.redirect('/profile')
-})
+	let post = await postModel.findOneAndUpdate(
+		{ _id: req.params.id },
+		{ content: req.body.content }
+	);
+	res.redirect("/profile");
+});
+
+// route to upload files
+// upload.single('image') this middleware indicates that the file is uploded through the 'image' named inputfield
+// app.post("/upload",upload.single('image'), async (req, res) => {
+// 	console.log(req.file);
+// 	res.redirect("/test");
+// });
+
+app.post("/upload", isLoggedIn, upload.single("image"), async (req,res) => {
+	let user = await userModel.findOne({ email: req.user.email });
+	user.profilepic = req.file.filename;
+	await user.save();
+	res.redirect("/profile");
+});
+
 // Middleware to check if the user is logged in
 function isLoggedIn(req, res, next) {
 	// Check if the token cookie exists
 	if (!req.cookies.token) res.redirect("/login");
-	else {
-		// Verify the JWT token
+	try {
 		let data = jwt.verify(req.cookies.token, "shhhh");
-		// Attach user data from the token to the request object
 		req.user = data;
-		next(); // Proceed to the next middleware or route handler
+		next();
+	} catch (err) {
+		console.log("JWT error:", err);
+		return res.redirect("/login");
 	}
 }
 
