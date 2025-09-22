@@ -32,6 +32,7 @@ It's a foundational project that covers essential concepts like **user authentic
 
 ## 📂 Project Structure
 
+```bash
 ├── app.js
 ├── models/
 │   ├── user.js
