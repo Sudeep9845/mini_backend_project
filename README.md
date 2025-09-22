@@ -52,6 +52,8 @@ It's a foundational project that covers essential concepts like **user authentic
 │   └── multer.js
 └── package.json
 
+```
+
 ---
 
 ## 📌 File Contents and Purpose
